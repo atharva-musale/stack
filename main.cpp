@@ -2,28 +2,29 @@
 #include <exception>
 using namespace std;
 
+#define CAPACITY 10
+
+// Custom exceptions for empty stack and full stack
 class EmptyStack : public exception
 {
 public:
-    const char* what()
-    {
-        return "Stack is empty.";
+    const char* what(){
+        return "Stack is empty. \n";
     }
 };
 
 class FullStack : public exception
 {
 public:
-    const char* what()
-    {
-        return "Stack is full.";
+    const char* what(){
+        return "Stack is full. \n";
     }
 };
 
-class Stack
-{
+//
+class Stack{
 private:
-    int s[5];
+    int stack[CAPACITY];
     int top;
     int size;
 public:
@@ -32,36 +33,31 @@ public:
         size = 0;
     }
 
-    void push(int val)
-    {
-        if(size == 5)
-        {
+    void push(int val){
+        if(size == CAPACITY){
             FullStack f;
             throw f;
         }
         top++;
         size++;
-        s[top] = val;
+        stack[top] = val;
     }
-    int pop()
-    {
+    int pop(){
         int temp;
-        if(size == 0)
-        {
+        if(size == 0){
             EmptyStack e;
             throw e;
         }
-        temp = s[top];
+        temp = stack[top];
         top--;
         size--;
         return temp;
     }
 
-    void display()
-    {
-        for(int i=0; i<size; i++)
-            cout<<s[i] <<" ";
-
+    void display() {
+        for(int i=0; i<size; i++){
+            cout<<stack[i] <<" ";
+        }
         cout<<endl;
     }
 };
@@ -70,46 +66,41 @@ public:
 int main()
 {
     cout << "------------- STACK --------------" << endl;
-    int ch, i =1;
-    Stack st;
-    while(i == 1){
-    cout<< "Enter: "<< endl;
-    cout<< "1. to push. "<< endl;
-    cout<< "2. to pop. "<< endl;
-    cout<< "3. to view. "<< endl;
-    cout<< "4. to exit. "<< endl;
-    cout<< "Choice: "<< endl;
-    cin >> ch;
-    switch(ch){
-    case 1: {int n;
-            cout<< "Enter value: ";
-            cin >> n;
-            try{
-                st.push(n);
-            }
-            catch(FullStack f){
-                cout << f.what()<< endl;
-            }
-            cout<< "\n--------------------\n";
-            break;}
-    case 2: {int n;
-            try{
-                n = st.pop();
-                cout<< "Value: "<< n;
-            }
-            catch(EmptyStack e){
-                cout << e.what()<< endl;
-            }
-            cout<< "\n--------------------\n";
-            break;}
-    case 3:{st.display();
-            cout<< "\n--------------------\n";
-            break;}
-    case 4: i = 2;
-            cout<< "\n--------------------\n";
-            break;
+    int choice, value;
+    Stack stack1;
+    while(1){
+        cout<< "Enter: "<< endl;
+        cout<< "1. to push. "<< endl;
+        cout<< "2. to pop. "<< endl;
+        cout<< "3. to view. "<< endl;
+        cout<< "4. to exit. "<< endl;
+        cout<< "Choice: "<< endl;
+        cin >> choice;
+        switch(choice){
+        case 1: cout<< "Enter value: ";
+                cin >> value;
+                try{
+                    stack1.push(value);
+                }
+                catch(FullStack f){
+                    cout << f.what();
+                }
+                break;
+        case 2: try{
+                    value = stack1.pop();
+                    cout<< "Value: "<< value;
+                }
+                catch(EmptyStack e){
+                    cout << e.what();
+                }
+                break;
+        case 3: stack1.display();
+                break;
+        case 4: exit(1);
+                break;
 
-    }
+        }
+        cout<< "--------------------\n";
     }
     return 0;
 }
